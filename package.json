@@ -1,0 +1,26 @@
+{
+  "name": "gitchats",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ex3ndr/gitchats.git",
+  "author": "Steve Korshakov <steve@korshakov.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc && node dist/main.js",
+    "start": "node dist/main.js",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^22.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.3",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "fastify": "^4.28.1",
+    "date-fns": "^2.29.1"
+  }
+}

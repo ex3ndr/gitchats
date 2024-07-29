@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+
+    // Building configuration
+    "target": "ESNext",
+    "module": "commonjs",
+    "forceConsistentCasingInFileNames": true,
+
+    // Language features
+    "lib": ["es2018", "esnext.asynciterable"],
+    "downlevelIteration": true,
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+
+    // Directories
+    "outDir": "./dist",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["sources/**/*"]
+}
