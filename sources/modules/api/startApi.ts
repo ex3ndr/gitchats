@@ -9,7 +9,7 @@ export async function startApi() {
 
     // Start API
     const app = fastify({
-        logger: hasRole('api'),
+        logger: hasRole('api') ? {} : false,
         trustProxy: true,
         bodyLimit: 1024 * 1024 * 100, // 100MB
     });

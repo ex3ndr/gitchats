@@ -1,10 +1,13 @@
-import chalk from 'chalk';
-import { format } from 'date-fns';
+import pino from 'pino';
 
-export function log(src: any) {
-    console.log(chalk.gray(format(Date.now(), 'yyyy-MM-dd HH:mm:ss')), src);
+const logger = pino({
+    level: 'info',
+});
+
+export function log(src: any, ...args: any[]) {
+    logger.info(src, ...args);
 }
 
-export function warn(src: any) {
-    console.warn(chalk.gray(format(Date.now(), 'yyyy-MM-dd HH:mm:ss')), src);
+export function warn(src: any, ...args: any[]) {
+    logger.warn(src, ...args);
 }
