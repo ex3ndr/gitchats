@@ -1,5 +1,5 @@
 import fastify from "fastify";
-import { log } from "../../utils/log";
+import { log, logger } from "../../utils/log";
 import { hasRole } from "../../roles";
 
 export async function startApi() {
@@ -9,7 +9,7 @@ export async function startApi() {
 
     // Start API
     const app = fastify({
-        logger: hasRole('api') ? {} : false,
+        logger: (hasRole('api') || hasRole('public-api')) ? logger : false,
         trustProxy: true,
         bodyLimit: 1024 * 1024 * 100, // 100MB
     });
@@ -25,13 +25,10 @@ export async function startApi() {
     //     (this as any).auth = null;
     // });
     app.get('/', function (request, reply) {
-        reply.send('Welcome to Baywatch API!');
+        reply.send('Welcome to Gitchats API!');
     });
 
     // Start
     const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
     await app.listen({ port, host: '0.0.0.0' });
-
-    // End
-    log('API ready on port http://localhost:' + port);
 }
