@@ -27,11 +27,11 @@
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",
-    "@octokit/auth-app": "6.1.1",
+    "@octokit/auth-app": "^6.1.1",
     "@prisma/client": "^5.13.0",
     "dotenv": "^16.4.5",
     "fastify": "^4.28.1",
-    "octokit": "3.2.1",
+    "octokit": "^3.0.0",
     "pino-pretty": "^11.2.2",
     "qs": "^6.12.3",
     "tweetnacl": "^1.0.3",
