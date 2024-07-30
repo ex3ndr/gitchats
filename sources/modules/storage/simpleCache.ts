@@ -1,4 +1,4 @@
-import { db } from "./db";
+import { db } from "@/modules/storage/db";
 
 export async function writeToSimpleCache(key: string, value: string) {
     await db.simpleCache.upsert({

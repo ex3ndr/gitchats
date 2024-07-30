@@ -7,7 +7,91 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+//
+// Authentication and onboarding
+//
+
+model SessionToken {
+    id String @id @default(cuid())
+
+    // Tokens
+    key       String  @unique
+    keyGithub String?
+
+    // Login
+    login  String
+    user   User?   @relation(fields: [userId], references: [id])
+    userId String?
+
+    // Meta
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model GithubProfile {
+    id        String @id
+    firstName String
+    lastName  String
+    photo     String
+}
+
+model OnboardingState {
+    login     String  @id
+    username  String? @unique
+    firstName String?
+    lastName  String?
+    photo     String?
+}
+
+//
+// User
+//
+
+model User {
+    id String @id @default(cuid())
+
+    // Connection info
+    login String
+
+    // Profile
+    username  String
+    firstName String
+    lastName  String?
+    photo     String?
+
+    // Flags
+    bot          Boolean @default(false)
+    system       Boolean @default(false)
+    experimental Boolean @default(false)
+    developer    Boolean @default(false)
+
+    // Meta
+    deletedAt DateTime?
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+
+    // Tokens
+    SessionToken SessionToken[]
+}
+
+//
+// Utilities
+//
+
 model SimpleCache {
     key   String @id
     value String
+}
+
+model GlobalLock {
+    key     String   @id @default(cuid())
+    value   String
+    timeout DateTime
+}
+
+model RepeatKey {
+    key       String   @id
+    value     String
+    createdAt DateTime @default(now())
+    expiresAt DateTime
 }

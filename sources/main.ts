@@ -1,8 +1,8 @@
 require('dotenv').config();
-import { startApi } from "./modules/api/startApi";
-import { db } from "./modules/storage/db";
-import { log } from "./utils/log";
-import { awaitShutdown } from "./utils/shutdown";
+import { startApi } from "@/modules/api/startApi";
+import { db } from "@/modules/storage/db";
+import { log } from "@/utils/log";
+import { awaitShutdown } from "@/utils/shutdown";
 
 async function main() {
 

@@ -20,7 +20,7 @@
     // Directories
     "outDir": "./dist",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./sources/*"]
     }
   },
   "include": ["sources/**/*"]
