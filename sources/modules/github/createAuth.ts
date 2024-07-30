@@ -1,7 +1,7 @@
 import { createAppAuth } from "@octokit/auth-app";
-import { auth } from "./auth";
+import { createGithubAuth } from "./createGithubAuth";
 
 export async function createAuth() {
-    const request = await auth({ type: 'app' });
+    const request = await createGithubAuth()({ type: 'app' });
     return request;
 }
