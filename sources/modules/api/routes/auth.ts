@@ -12,7 +12,8 @@ export async function auth(app: FastifyInstance) {
             reply.code(400);
             return { ok: false, error: 'invalid_request' };
         }
-        return await startAuth(body.data.platform);
+        let config = await startAuth(body.data.platform);
+        return { ok: true, ...config };
     });
     // app.post('/verify', async (request, reply) => {
     //     return await createAuth();
