@@ -28,13 +28,6 @@ model SessionToken {
     updatedAt DateTime @updatedAt
 }
 
-model GithubProfile {
-    id        String @id
-    firstName String
-    lastName  String
-    photo     String
-}
-
 model OnboardingState {
     login     String  @id
     username  String? @unique
@@ -72,6 +65,18 @@ model User {
 
     // Tokens
     SessionToken SessionToken[]
+}
+
+//
+// GitHub Integration
+//
+
+model GithubProfile {
+    id        String  @id
+    username  String
+    firstName String
+    lastName  String?
+    photo     String?
 }
 
 //

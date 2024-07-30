@@ -1,29 +1,44 @@
-import { splitName } from "@/utils/splitName";
-import { exchangeCodeForToken, getGitHubUserClient } from "./githubAuth";
+import { exchangeCodeForToken } from "./githubAuth";
+import { getUserProfile } from "./api";
+import { inTx } from "../storage/inTx";
+import { doWriteGithubProfile } from "../ops/doWriteGithubProfile";
+import { generateSafeToken } from "../crypto/generateSafeToken";
 
 export async function authVerify(code: string) {
 
     // Exchange code for token
-    const token = await exchangeCodeForToken(code);
+    const githubToken = await exchangeCodeForToken(code);
 
-    // Fetch profile
-    const client = getGitHubUserClient(token);
+    // Create token
+    const token = await generateSafeToken();
 
     // Load user
-    const user = await client.request('GET /user');
-    const avatarUrl = user.data.avatar_url;
-    const { first, last } = splitName(user.data.name || 'Noname');
-    const bio = user.data.bio;
+    const profile = await getUserProfile(githubToken);
+    const login = 'github:' + profile.id;
+    await inTx(async (tx) => {
 
-    console.warn(user.data.avatar_url);
+        // Write github profile
+        await doWriteGithubProfile(tx, profile);
 
-    // Get user info
-    // const user = await octokit.request("GET /user", {
-    //     headers: {
-    //         "X-GitHub-Api-Version": "2022-11-28",
-    //     },
-    // });
-    console.warn(token);
+        // Check if token exists (should not happen)
+        let ex = await tx.sessionToken.findUnique({ where: { key: token } });
+        if (ex) {
+            return;
+        }
 
-    return '!!!';
+        // Try to find user
+        let user = await tx.user.findFirst({ where: { login: login, deletedAt: null } });
+
+        // Create token
+        await tx.sessionToken.create({
+            data: {
+                key: token,
+                keyGithub: token,
+                login: login,
+                userId: user ? user.id : null
+            }
+        });
+    });
+
+    return token;
 }
