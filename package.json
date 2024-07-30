@@ -9,19 +9,25 @@
     "build": "tsc",
     "dev": "tsc && node dist/main.js | pino-pretty --ignore 'pid,hostname'",
     "start": "node dist/main.js | pino-pretty --ignore 'pid,hostname'",
-    "test": "jest"
+    "test": "jest",
+    "migrate": "prisma migrate dev",
+    "generate": "prisma generate",
+    "postinstall": "prisma generate",
+    "db": "docker run -e POSTGRES_PASSWORD=postgres -v $(pwd)/.pgdata:/var/lib/postgresql/data -p 5432:5432 postgres"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "@types/node": "^22.0.0",
     "@types/qs": "^6.9.15",
     "jest": "^29.7.0",
+    "prisma": "^5.13.0",
     "ts-jest": "^29.2.3",
     "typescript": "^5.5.4"
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",
     "@octokit/auth-app": "6.1.1",
+    "@prisma/client": "^5.13.0",
     "dotenv": "^16.4.5",
     "fastify": "^4.28.1",
     "octokit": "3.2.1",
