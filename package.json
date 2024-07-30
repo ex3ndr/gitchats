@@ -6,8 +6,8 @@
   "author": "Steve Korshakov <steve@korshakov.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc && node dist/main.js | pino-pretty --ignore 'pid,hostname'",
+    "build": "tsc && tsc-alias",
+    "dev": "tsc && tsc-alias && node dist/main.js | pino-pretty --ignore 'pid,hostname'",
     "start": "node dist/main.js | pino-pretty --ignore 'pid,hostname'",
     "test": "jest",
     "migrate": "prisma migrate dev",
@@ -22,7 +22,8 @@
     "jest": "^29.7.0",
     "prisma": "^5.13.0",
     "ts-jest": "^29.2.3",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "tsc-alias": "^1.8.10"
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",
