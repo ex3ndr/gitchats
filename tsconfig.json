@@ -3,7 +3,8 @@
 
     // Building configuration
     "target": "ESNext",
-    "module": "commonjs",
+    "module": "node16",
+    "moduleResolution": "node16",
     "forceConsistentCasingInFileNames": true,
 
     // Language features

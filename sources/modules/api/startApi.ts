@@ -1,6 +1,7 @@
 import fastify from "fastify";
 import { log, logger } from "../../utils/log";
 import { hasRole } from "../../roles";
+import { auth } from "./routes/auth";
 
 export async function startApi() {
 
@@ -27,6 +28,12 @@ export async function startApi() {
     app.get('/', function (request, reply) {
         reply.send('Welcome to Gitchats API!');
     });
+
+    if (hasRole('api')) {
+
+        // Auth routes
+        app.register(auth, { prefix: '/auth' });
+    }
 
     // Start
     const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
