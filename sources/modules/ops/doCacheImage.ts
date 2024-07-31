@@ -38,7 +38,7 @@ export async function doCacheImage(kind: 'avatar', url: string): Promise<{ id: s
         if (existing) {
             return JSON.parse(existing.value) as { id: string, width: number, height: number, thumbhash: string };
         }
-        tx.simpleCache.create({
+        await tx.simpleCache.create({
             data: {
                 key: 'image:' + kind + ':' + url.toLocaleLowerCase(),
                 value: JSON.stringify({ id, width: processed.width, height: processed.height, thumbhash: processed.thumbhash })
