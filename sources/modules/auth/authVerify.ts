@@ -33,7 +33,7 @@ export async function authVerify(code: string) {
         await tx.sessionToken.create({
             data: {
                 key: token,
-                keyGithub: token,
+                keyGithub: githubToken,
                 login: login,
                 userId: user ? user.id : null
             }

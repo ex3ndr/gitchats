@@ -3,6 +3,7 @@ import { log, logger } from "../../utils/log";
 import { hasRole } from "../../roles";
 import { auth, authDecorators, tokenAuthPlugin } from "./routes/auth";
 import { pre } from "./routes/pre";
+import { secure } from './routes/secure';
 
 export async function startApi() {
 
@@ -38,6 +39,12 @@ export async function startApi() {
             sub.addHook('preHandler', tokenAuthPlugin('login')); // Requires login associated with token
             pre(sub);
         }, { prefix: '/pre' });
+
+        // Special case for account operations that don't require a valid user
+        app.register(async function (sub) {
+            sub.addHook('preHandler', tokenAuthPlugin('any')); // Doesn't require any user, login or token
+            secure(sub);
+        }, { prefix: '/secure' });
     }
 
     // Start
