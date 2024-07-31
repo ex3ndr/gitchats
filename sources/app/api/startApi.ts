@@ -4,6 +4,8 @@ import { hasRole } from "../../roles";
 import { auth, authDecorators, tokenAuthPlugin } from "./routes/auth";
 import { pre } from "./routes/pre";
 import { secure } from './routes/secure';
+import { updates } from "./routes/updates";
+import { profile } from "./routes/profile";
 
 export async function startApi() {
 
@@ -39,6 +41,13 @@ export async function startApi() {
             sub.addHook('preHandler', tokenAuthPlugin('login')); // Requires login associated with token
             pre(sub);
         }, { prefix: '/pre' });
+
+        // Authenticated routes
+        app.register(async function (sub) {
+            sub.addHook('preHandler', tokenAuthPlugin('user')); // Requires non-deleted user associated with token
+            updates(sub);
+            profile(sub);
+        }, { prefix: '/app' });
 
         // Special case for account operations that don't require a valid user
         app.register(async function (sub) {
