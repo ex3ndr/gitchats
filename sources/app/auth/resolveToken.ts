@@ -1,4 +1,4 @@
-import { inTx } from "../storage/inTx";
+import { inTx } from "@/modules/storage/inTx";
 
 export type ResolveTokenResult = { user?: string, deleted?: boolean, sessionId: string, login: string } | null;
 export async function resolveToken(token: string): Promise<ResolveTokenResult> {

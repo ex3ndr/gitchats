@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-
     // Building configuration
     "target": "ESNext",
     "module": "node16",
     "moduleResolution": "node16",
     "forceConsistentCasingInFileNames": true,
-
     // Language features
-    "lib": ["es2018", "esnext.asynciterable"],
+    "lib": [
+      "es2018",
+      "esnext.asynciterable"
+    ],
     "downlevelIteration": true,
     "strict": true,
     "allowSyntheticDefaultImports": true,
@@ -16,12 +17,15 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
-
     // Directories
     "outDir": "./dist",
     "paths": {
-      "@/*": ["./sources/*"]
+      "@/*": [
+        "./sources/*"
+      ]
     }
   },
-  "include": ["sources/**/*"]
+  "include": [
+    "sources/**/*"
+  ]
 }

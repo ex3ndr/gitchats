@@ -1,8 +1,8 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import * as z from "zod";
-import { authVerify } from "@/modules/auth/authVerify";
-import { startAuth } from "@/modules/auth/authStart";
-import { resolveToken } from "@/modules/auth/resolveToken";
+import { authVerify } from "@/app/auth/authVerify";
+import { startAuth } from "@/app/auth/authStart";
+import { resolveToken } from "@/app/auth/resolveToken";
 
 export async function auth(app: FastifyInstance) {
     const authStartSchema = z.object({

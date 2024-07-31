@@ -1,4 +1,4 @@
-import { inTx } from "../storage/inTx";
+import { inTx } from "@/modules/storage/inTx";
 import { findUserByLogin } from "../user/findUserByLogin";
 
 export type PreStateResponse = {

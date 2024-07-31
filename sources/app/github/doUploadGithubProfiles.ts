@@ -1,6 +1,6 @@
 import { GithubApiProfile } from "@/modules/github/api";
-import { db } from "../storage/db";
-import { doCacheImage } from "./doCacheImage";
+import { db } from "@/modules/storage/db";
+import { doCacheImage } from "../../modules/files/doCacheImage";
 
 export async function doUploadGithubProfiles(profile: GithubApiProfile) {
 

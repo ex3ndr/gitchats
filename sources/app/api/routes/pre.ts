@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import * as z from "zod";
 import { authLogin } from "./auth";
-import { completeProfile, resolvePreState } from "@/modules/auth/pre";
+import { completeProfile, resolvePreState } from "@/app/auth/pre";
 
 export async function pre(app: FastifyInstance) {
     app.get('/state', async (request, reply) => {

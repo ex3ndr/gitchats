@@ -1,7 +1,7 @@
 import { randomKey } from "@/utils/randomKey";
-import { uploadFile } from "../files/files";
-import { processImage } from "../media/processImage";
-import { inTx } from "../storage/inTx";
+import { uploadFile } from "@/modules/files/files";
+import { processImage } from "@/modules/media/processImage";
+import { inTx } from "@/modules/storage/inTx";
 import axios from 'axios';
 
 export async function doCacheImage(kind: 'avatar', url: string): Promise<{ id: string, width: number, height: number, thumbhash: string }> {

@@ -65,6 +65,8 @@ model User {
 
     // Tokens
     SessionToken SessionToken[]
+    Update       Update[]
+    PushTokens   PushTokens[]
 }
 
 //
@@ -77,6 +79,40 @@ model GithubProfile {
     firstName String
     lastName  String?
     photo     Json?
+}
+
+//
+// Push Notifications
+//
+
+model PushTokens {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String
+    token     String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+//
+// Updates
+//
+
+model Update {
+    // Connection info
+    userId String
+    seq    Int
+    user   User   @relation(fields: [userId], references: [id])
+
+    // Data
+    repeatKey String?
+    data      Json
+
+    // Meta
+    createdAt DateTime @default(now())
+
+    // PK
+    @@unique([userId, seq])
 }
 
 //

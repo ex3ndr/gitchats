@@ -1,8 +1,8 @@
-import { exchangeCodeForToken } from "../github/githubAuth";
-import { getUserProfile } from "../github/api";
-import { inTx } from "../storage/inTx";
-import { generateSafeToken } from "../crypto/generateSafeToken";
-import { doUploadGithubProfiles } from "../ops/doUploadGithubProfiles";
+import { exchangeCodeForToken } from "@/modules/github/githubAuth";
+import { getUserProfile } from "@/modules/github/api";
+import { inTx } from "@/modules/storage/inTx";
+import { generateSafeToken } from "@/modules/crypto/generateSafeToken";
+import { doUploadGithubProfiles } from "../github/doUploadGithubProfiles";
 
 export async function authVerify(code: string) {
 
