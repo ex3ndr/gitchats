@@ -2,41 +2,26 @@ import { inTx } from "../storage/inTx";
 import { findUserByLogin } from "../user/findUserByLogin";
 
 export type PreStateResponse = {
-    needName: boolean,
-    needUsername: boolean,
     active: boolean,
     canActivate: boolean,
 }
+
 export async function resolvePreState(login: string): Promise<PreStateResponse> {
     return await inTx<PreStateResponse>(async (tx) => {
-        let needName = true;
-        let needUsername = true;
         let canActivate = false;
         let active = false;
 
         // Check if profile exists
         let user = await findUserByLogin(tx, login);
         if (user) {
-            needName = false;
-            needUsername = false;
             active = true;
-        } else {
-            let onboardingState = await tx.onboardingState.findUnique({ where: { login } });
-            if (onboardingState) {
-                if (onboardingState.firstName !== null) {
-                    needName = false;
-                }
-                if (onboardingState.username !== null) {
-                    needUsername = false;
-                }
-            }
         }
 
         // If profile completed and username is set, then canActivate
-        canActivate = !needName && !needUsername && !active;
+        canActivate = !active;
 
         // Return result
-        return { needName, needUsername, active, canActivate };
+        return { active, canActivate };
     });
 }
 
@@ -128,24 +113,23 @@ export async function completeProfile(login: string): Promise<'ok' | 'invalid_st
             return 'ok';
         }
 
-        // Load onboarding state
-        let onboardingState = await tx.onboardingState.findUnique({ where: { login } });
-        if (!onboardingState) {
+        // We only support GitHub login
+        if (!login.startsWith('github:')) {
             return 'invalid_state';
         }
 
-        // Check if all fields are filled
-        if (onboardingState.firstName === null || onboardingState.username === null) {
-            return 'invalid_state';
-        }
+        // Load GitHub profile
+        let githubId = login.substring(7);
+        let githubProfile = await tx.githubProfile.findUniqueOrThrow({ where: { id: githubId } });
 
         // Create user
         const u = await tx.user.create({
             data: {
                 login,
-                username: onboardingState.username,
-                firstName: onboardingState.firstName,
-                lastName: onboardingState.lastName,
+                username: githubProfile.username,
+                firstName: githubProfile.firstName,
+                lastName: githubProfile.lastName,
+                photo: githubProfile.photo as any, /* WTF? */
                 deletedAt: null
             }
         });
@@ -156,7 +140,7 @@ export async function completeProfile(login: string): Promise<'ok' | 'invalid_st
             data: { userId: u.id }
         });
 
-        // Delete onboarding state
+        // Delete onboarding state (if exists)
         await tx.onboardingState.delete({ where: { login } });
 
         return 'ok';
