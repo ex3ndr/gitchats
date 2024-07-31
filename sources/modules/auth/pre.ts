@@ -41,83 +41,83 @@ export async function resolvePreState(login: string): Promise<PreStateResponse> 
 }
 
 
-export async function saveUsername(login: string, username: string): Promise<'ok' | 'invalid_username' | 'already_used'> {
-    return await inTx<'ok' | 'invalid_username' | 'already_used'>(async (tx) => {
+// export async function saveUsername(login: string, username: string): Promise<'ok' | 'invalid_username' | 'already_used'> {
+//     return await inTx<'ok' | 'invalid_username' | 'already_used'>(async (tx) => {
 
-        // Ignore if user (with username) already exists
-        let user = await findUserByLogin(tx, login);
-        if (user) {
-            return 'ok';
-        }
+//         // Ignore if user (with username) already exists
+//         let user = await findUserByLogin(tx, login);
+//         if (user) {
+//             return 'ok';
+//         }
 
-        // Ignore if onboarding state already exists and has username
-        let onboardingState = await tx.onboardingState.findUnique({ where: { login } });
-        if (onboardingState && onboardingState.username !== null) {
-            return 'ok';
-        }
+//         // Ignore if onboarding state already exists and has username
+//         let onboardingState = await tx.onboardingState.findUnique({ where: { login } });
+//         if (onboardingState && onboardingState.username !== null) {
+//             return 'ok';
+//         }
 
-        // Check username format
-        if (!checkUsername(username)) {
-            return 'invalid_username';
-        }
+//         // Check username format
+//         if (!checkUsername(username)) {
+//             return 'invalid_username';
+//         }
 
-        // Check if username is already used by user
-        let usernameExists = await getUserByUsername(tx, username);
-        if (usernameExists) {
-            return 'already_used';
-        }
+//         // Check if username is already used by user
+//         let usernameExists = await getUserByUsername(tx, username);
+//         if (usernameExists) {
+//             return 'already_used';
+//         }
 
-        // Check if username is already used by onboarding state
-        onboardingState = await tx.onboardingState.findFirst({
-            where: {
-                username: {
-                    equals: username,
-                    mode: 'insensitive'
-                }
-            }
-        });
-        if (onboardingState) {
-            return 'already_used';
-        }
+//         // Check if username is already used by onboarding state
+//         onboardingState = await tx.onboardingState.findFirst({
+//             where: {
+//                 username: {
+//                     equals: username,
+//                     mode: 'insensitive'
+//                 }
+//             }
+//         });
+//         if (onboardingState) {
+//             return 'already_used';
+//         }
 
-        // Save username
-        await tx.onboardingState.upsert({
-            where: { login },
-            create: { login, username },
-            update: { username }
-        });
+//         // Save username
+//         await tx.onboardingState.upsert({
+//             where: { login },
+//             create: { login, username },
+//             update: { username }
+//         });
 
-        return 'ok';
-    });
-}
+//         return 'ok';
+//     });
+// }
 
-export async function saveName(login: string, firstName: string, lastName: string | null): Promise<'ok' | 'invalid_name'> {
-    return await inTx<'ok' | 'invalid_name'>(async (tx) => {
+// export async function saveName(login: string, firstName: string, lastName: string | null): Promise<'ok' | 'invalid_name'> {
+//     return await inTx<'ok' | 'invalid_name'>(async (tx) => {
 
-        // Ignore if user already exists
-        let user = await findUserByLogin(tx, login);
-        if (user) {
-            return 'ok';
-        }
+//         // Ignore if user already exists
+//         let user = await findUserByLogin(tx, login);
+//         if (user) {
+//             return 'ok';
+//         }
 
-        // Check name format
-        if (firstName.length === 0 || firstName.length > 50) {
-            return 'invalid_name';
-        }
-        if (lastName !== null && (lastName.length === 0 || lastName.length > 50)) {
-            return 'invalid_name';
-        }
+//         // Check name format
+//         if (firstName.length === 0 || firstName.length > 50) {
+//             return 'invalid_name';
+//         }
+//         if (lastName !== null && (lastName.length === 0 || lastName.length > 50)) {
+//             return 'invalid_name';
+//         }
 
-        // Save name
-        await tx.onboardingState.upsert({
-            where: { login },
-            create: { login, firstName, lastName },
-            update: { firstName, lastName }
-        });
+//         // Save name
+//         await tx.onboardingState.upsert({
+//             where: { login },
+//             create: { login, firstName, lastName },
+//             update: { firstName, lastName }
+//         });
 
-        return 'ok';
-    });
-}
+//         return 'ok';
+//     });
+// }
 
 export async function completeProfile(login: string): Promise<'ok' | 'invalid_state'> {
     return await inTx<'ok' | 'invalid_state'>(async (tx) => {
