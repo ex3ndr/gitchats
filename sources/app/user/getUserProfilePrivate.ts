@@ -37,6 +37,8 @@ export async function getUserProfilePrivate(tx: Tx, uid: string) {
         username,
         firstName,
         lastName,
+        github,
+        photo,
         roles
     };
 }
