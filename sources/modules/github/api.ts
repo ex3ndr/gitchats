@@ -7,6 +7,7 @@ export type GithubApiProfile = {
     firstName: string;
     lastName: string | null;
     bio: string | null;
+    avatar: string;
 }
 
 export async function getUserProfile(token: string) {
@@ -25,6 +26,7 @@ export async function getUserProfile(token: string) {
         username: username,
         firstName: first,
         lastName: last,
+        avatar: avatarUrl,
         bio: bio
     };
 

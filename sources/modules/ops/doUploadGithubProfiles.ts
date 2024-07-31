@@ -1,19 +1,33 @@
-import { Tx } from "@/modules/storage/inTx";
 import { GithubApiProfile } from "@/modules/github/api";
+import { db } from "../storage/db";
+import { doCacheImage } from "./doCacheImage";
 
-export async function doWriteGithubProfile(tx: Tx, profile: GithubApiProfile) {
-    await tx.githubProfile.upsert({
+export async function doUploadGithubProfiles(profile: GithubApiProfile) {
+
+    //
+    // Upload avatar
+    //
+
+    const avatar = await doCacheImage('avatar', profile.avatar);
+
+    //
+    // Update profile
+    //
+
+    await db.githubProfile.upsert({
         where: { id: profile.id },
         update: {
             username: profile.username,
             firstName: profile.firstName,
             lastName: profile.lastName,
+            photo: avatar
         },
         create: {
             id: profile.id,
             username: profile.username,
             firstName: profile.firstName,
             lastName: profile.lastName,
+            photo: avatar
         }
     });
 }

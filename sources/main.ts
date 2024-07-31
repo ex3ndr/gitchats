@@ -3,6 +3,7 @@ import { startApi } from "@/modules/api/startApi";
 import { db } from "@/modules/storage/db";
 import { log } from "@/utils/log";
 import { awaitShutdown } from "@/utils/shutdown";
+import { loadFiles } from "./modules/files/files";
 
 async function main() {
 
@@ -12,6 +13,7 @@ async function main() {
 
     log('Connecting to DB...');
     await db.$connect();
+    await loadFiles();
 
     //
     // Start API

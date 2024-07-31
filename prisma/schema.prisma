@@ -33,7 +33,7 @@ model OnboardingState {
     username  String? @unique
     firstName String?
     lastName  String?
-    photo     String?
+    photo     Json?
 }
 
 //
@@ -50,7 +50,7 @@ model User {
     username  String
     firstName String
     lastName  String?
-    photo     String?
+    photo     Json?
 
     // Flags
     bot          Boolean @default(false)
@@ -76,7 +76,7 @@ model GithubProfile {
     username  String
     firstName String
     lastName  String?
-    photo     String?
+    photo     Json?
 }
 
 //

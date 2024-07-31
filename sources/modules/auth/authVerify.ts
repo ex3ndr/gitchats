@@ -1,8 +1,8 @@
-import { exchangeCodeForToken } from "./githubAuth";
-import { getUserProfile } from "./api";
+import { exchangeCodeForToken } from "../github/githubAuth";
+import { getUserProfile } from "../github/api";
 import { inTx } from "../storage/inTx";
-import { doWriteGithubProfile } from "../ops/doWriteGithubProfile";
 import { generateSafeToken } from "../crypto/generateSafeToken";
+import { doUploadGithubProfiles } from "../ops/doUploadGithubProfiles";
 
 export async function authVerify(code: string) {
 
@@ -12,13 +12,13 @@ export async function authVerify(code: string) {
     // Create token
     const token = await generateSafeToken();
 
-    // Load user
+    // Load profile
     const profile = await getUserProfile(githubToken);
+    await doUploadGithubProfiles(profile);
+
+    // Create session
     const login = 'github:' + profile.id;
     await inTx(async (tx) => {
-
-        // Write github profile
-        await doWriteGithubProfile(tx, profile);
 
         // Check if token exists (should not happen)
         let ex = await tx.sessionToken.findUnique({ where: { key: token } });

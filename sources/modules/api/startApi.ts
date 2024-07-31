@@ -1,7 +1,8 @@
 import fastify from "fastify";
 import { log, logger } from "../../utils/log";
 import { hasRole } from "../../roles";
-import { auth } from "./routes/auth";
+import { auth, authDecorators, tokenAuthPlugin } from "./routes/auth";
+import { pre } from "./routes/pre";
 
 export async function startApi() {
 
@@ -19,20 +20,24 @@ export async function startApi() {
         allowedHeaders: '*',
         methods: ['GET', 'POST']
     });
-    // app.decorateRequest('setAuth', function (login: string, id: string, user: string | null, deleted: boolean | null) {
-    //     (this as any).auth = { login, user, id, deleted };
-    // });
-    // app.decorateRequest('setAuthNone', function () {
-    //     (this as any).auth = null;
-    // });
+    authDecorators(app as any);
+
+    // Entry
     app.get('/', function (request, reply) {
         reply.send('Welcome to Gitchats API!');
     });
 
+    // API routes
     if (hasRole('api')) {
 
         // Auth routes
         app.register(auth, { prefix: '/auth' });
+
+        // Onboarding routes
+        app.register(async (sub) => {
+            sub.addHook('preHandler', tokenAuthPlugin('login')); // Requires login associated with token
+            pre(sub);
+        }, { prefix: '/pre' });
     }
 
     // Start
