@@ -141,7 +141,7 @@ export async function completeProfile(login: string): Promise<'ok' | 'invalid_st
         });
 
         // Delete onboarding state (if exists)
-        await tx.onboardingState.delete({ where: { login } });
+        // await tx.onboardingState.delete({ where: { login } });
 
         return 'ok';
     });
