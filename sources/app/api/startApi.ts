@@ -6,6 +6,7 @@ import { pre } from "./routes/pre";
 import { secure } from './routes/secure';
 import { updates } from "./routes/updates";
 import { profile } from "./routes/profile";
+import { feed } from "./routes/feed";
 
 export async function startApi() {
 
@@ -47,6 +48,7 @@ export async function startApi() {
             sub.addHook('preHandler', tokenAuthPlugin('user')); // Requires non-deleted user associated with token
             updates(sub);
             profile(sub);
+            feed(sub);
         }, { prefix: '/app' });
 
         // Special case for account operations that don't require a valid user
