@@ -1,5 +1,5 @@
 import { splitName } from "@/utils/splitName";
-import { getGitHubUserClient } from "./githubAuth";
+import { getGitHubAppClient, getGitHubUserClient } from "./githubAuth";
 
 export type GithubApiProfile = {
     id: string;
@@ -31,4 +31,22 @@ export async function getUserProfile(token: string) {
     };
 
     return profile;
+}
+
+export async function getUserFollowers(username: string) {
+    const client = getGitHubAppClient();
+    const folowers = await client.request('GET /users/{username}/followers', { username });
+    return folowers.data.map((follower) => ({
+        id: follower.id.toString(),
+        username: follower.login
+    }));
+}
+
+export async function getUserFollowing(username: string) {
+    const client = getGitHubAppClient();
+    const folowers = await client.request('GET /users/{username}/following', { username });
+    return folowers.data.map((follower) => ({
+        id: follower.id.toString(),
+        username: follower.login
+    }));
 }
