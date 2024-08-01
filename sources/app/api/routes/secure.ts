@@ -1,21 +1,22 @@
 import { FastifyInstance } from "fastify";
 import { authRaw } from "./auth";
+import { deleteProfile } from "@/app/auth/delete";
 // import { deleteProfile } from "../../profile/delete";
 
 export async function secure(app: FastifyInstance) {
-    // app.post('/delete', async (request, reply) => {
-    //     let auth = authRaw(request);
+    app.post('/delete', async (request, reply) => {
+        let auth = authRaw(request);
 
-    //     // Delete profile
-    //     if (auth !== null && !auth.deleted) {
-    //         await deleteProfile(auth.id);
-    //     }
+        // Delete profile
+        if (auth !== null && auth.user && !auth.deleted) {
+            await deleteProfile(auth.user);
+        }
 
-    //     // Done
-    //     return {
-    //         ok: true
-    //     };
-    // });
+        // Done
+        return {
+            ok: true
+        };
+    });
     app.post('/status', async (request, reply) => {
         let auth = authRaw(request);
         let status = false;
